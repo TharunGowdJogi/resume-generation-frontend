@@ -1,1 +1,1 @@
-# resume-generation-frontend
+# vue-resume-generation-teller
