@@ -1,6 +1,6 @@
 <template>
   <div>
-    <details :employment="current_employment" @save="handleSaveEmployment" @reset_form="reset_employement" />
+    <Form :employment="current_employment" @save="handleSaveEmployment" @reset_form="reset_employement" />
     <v-row style="margin-top: 20px;">
       <v-col v-for="(employment, index) in employments" :key="index" cols="12" md="6">
         <v-card>
@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref, toRefs } from 'vue';
-import details from './form.vue';
+import Form from './form.vue';
 
 const props = defineProps({
   employments: {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <details :education="current_education" @save="handle_save_education" @reset_education="reset_education" />
+    <Form :education="current_education" @save="handle_save_education" @reset_education="reset_education" />
     <v-row style="margin-top: 20px;">
       <v-col v-for="(education, index) in educations" :key="index" cols="12" md="6">
         <v-card>
@@ -38,7 +38,7 @@
 
 <script setup>
 import { ref, toRefs } from 'vue';
-import details from './form.vue';
+import Form from './form.vue';
 
 const props = defineProps({
   educations: {
