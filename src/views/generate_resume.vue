@@ -4,24 +4,24 @@
       <v-col cols="12" class="text-start">
         <h1
         >
-          Genrate Resume
+          Generate Resume
         </h1>
       </v-col>
     </v-row>
-    <Resume :resume_details="resume_details" @save="createResume" />
+    <Resume :resume_details="resume_details" @save="generate_resume" />
              <v-snackbar v-model="snackbar.value" rounded="pill">
         {{ snackbar.text }}
         <template v-slot:actions>
-          <v-btn :color="snackbar.color" variant="text" @click="closeSnackBar()">Close</v-btn>
+          <v-btn :color="snackbar.color" variant="text" @click="close_snackbar()">Close</v-btn>
         </template>
       </v-snackbar>
   </v-container>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import Resume from "../components/resume_details/resume.vue";
-import { updateSnackBar } from "../utils/utils";
+import resume_services from "../services/resume_services";
 
 const snackbar = ref({
   value: false,
@@ -29,7 +29,7 @@ const snackbar = ref({
   text: "",
 });
 const resume_details = ref({
-  user_details: JSON.parse(localStorage.getItem("user")) || {
+  user_info: JSON.parse(localStorage.getItem("user")) || {
     first_name: "",
     last_name: "",
     email: "",
@@ -41,8 +41,24 @@ const resume_details = ref({
   honors: [],
 });
 
-const createResume = async () => {
-  // Logic to create resume and make API call
+const generate_resume = async () => {
   
+  resume_services.add_resume({
+    ...resume_details.value,
+    user_id: resume_details.value.user_info.user_id,
+  })
+    .then((res) => {
+      console.log(res);
+      snackbar.value = { value: true, color: 'success', text: 'Resume Created Successfully' };
+    })
+    .catch((err) => {
+      console.log(err);
+      snackbar.value = { value: true, color: 'success', text:  err?.response?.data?.message || "Failed to generate Resume!" };
+    });
+  
+};
+
+const close_snackbar = () => {
+  snackbar.value.value = false;
 };
 </script>
