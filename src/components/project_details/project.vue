@@ -1,20 +1,18 @@
 <template>
   <div>
-    <Form :project="edit_project_data" @save="save_project" @reset_form="reset_form" />
+    <Form :project="edit_project_data" @save="save_project" @reset_form="reset_form" :user_previous_projects="user_previous_projects" />
 
-    <v-row justify="center">
-      <v-col cols="12">
+    <v-row justify="center" style="margin-top: 20px;">
+      <v-col cols="9">
         <v-card v-for="(project, index) in projects" :key="index" class="mb-3">
           <v-card-title>{{ project.organization }}</v-card-title>
           <v-card-subtitle>{{ project.title }} - {{ project.year }}</v-card-subtitle>
           <v-card-text>{{ project.details }}</v-card-text>
           <v-card-actions>
-            <v-btn icon @click="set_edit_project(index)">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon @click="remove_project(index)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+            <div class="text-center">
+              <v-btn variant="elevated" color="primary" class="ml-2" @click="set_edit_project(index)">Edit</v-btn>
+              <v-btn variant="elevated" color="primary" @click="remove_project(index)" style="margin-left:10px;">Delete</v-btn>
+            </div>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -37,10 +35,14 @@ const props = defineProps({
   projects: {
     type: Array,
     required: true
-  }
+  },
+  user_previous_projects: {
+    type: Array,
+    required: true
+  },
 });
 
-const { projects } = toRefs(props);
+const { projects, user_previous_projects } = toRefs(props);
 const default_project_data = {
   project_id: null, organization: '', title: '', year: '', details: '', city: '', state: '', country: ''
 };
