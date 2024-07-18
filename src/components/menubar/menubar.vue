@@ -30,6 +30,10 @@ const routes = [
       path: "/generate-resume",
       name: "Generate a Resume",
     },
+    {
+      path: "/all-resume",
+      name: "All Resume's",
+    }
   
 ];
 
