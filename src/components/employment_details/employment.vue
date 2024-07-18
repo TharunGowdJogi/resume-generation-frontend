@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Form :employment="current_employment" @save="handleSaveEmployment" @reset_form="reset_employement" />
+    <Form :employment="current_employment" @save="handle_save_employment" @reset_form="reset_employement" :user_previous_employments="user_previous_employments" />
     <v-row style="margin-top: 20px;">
       <v-col v-for="(employment, index) in employments" :key="index" cols="12" md="6">
         <v-card>
@@ -43,12 +43,16 @@ const props = defineProps({
   employments: {
     type: Array,
     required: true
+  },
+  user_previous_employments: {
+    type: Array,
+    required: true
   }
 });
 
-const { employments } = toRefs(props);
+const { employments, user_previous_employments } = toRefs(props);
 const default_employment = {
-  organization: '', title: '', city: '', state: '', country: '', from_year: '', to_year: '', description: ''
+  employment_id: null, organization: '', title: '', city: '', state: '', country: '', from_year: '', to_year: '', description: ''
 };
 const current_employment = ref({ ...default_employment });
 const snackbar = ref({ value: false, color: '', text: '' });
