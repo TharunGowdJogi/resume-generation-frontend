@@ -1,6 +1,6 @@
 <template>
     <div>
-      <Form :honor="current_honor" @save="handle_save_honor" @reset_form="reset_honor" />
+      <Form :honor="current_honor" @save="handle_save_honor" @reset_form="reset_honor" :user_previous_honors="user_previous_honors" />
       <v-row style="margin-top: 20px;">
         <v-col v-for="(honor, index) in honors" :key="index" cols="12" md="6">
           <v-card>
@@ -16,7 +16,7 @@
               <br />
               Position: {{ honor.title }} <br/>
               Description: {{ honor.description }}
-              <br />
+              <br /> <br/>
               <div class="text-center">
                 <v-btn variant="elevated" color="primary" class="ml-2" @click="edit_honor(index)">Edit</v-btn>
                 <v-btn variant="elevated" color="primary" @click="delete_honor(index)" style="margin-left:10px;">Delete</v-btn>
@@ -42,10 +42,14 @@
     honors: {
       type: Array,
       required: true
-    }
+    },
+    user_previous_honors: {
+      type: Array,
+      required: true
+    },
   });
   
-  const { honors } = toRefs(props);
+  const { honors, user_previous_honors } = toRefs(props);
   const default_honor = {
     honor_id: null, organization: '', title: '', year: '', details: '', description: ''
   };
