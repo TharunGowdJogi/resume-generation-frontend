@@ -19,7 +19,7 @@ export default {
   update_resume(resume) {
     return apiClient.put(`resume/${resume.resume_id}`,resume)
   },
-  get_resume_by_user_id(resume_id) {
-    return apiClient.get(`resume/user/${resume_id}`)
+  get_resume_by_user_id(user_id) {
+    return apiClient.get(`resume/user/${user_id}`)
   }
 };

@@ -3,6 +3,7 @@ const login = () => import('./views/login.vue');
 const home = () => import('./views/home.vue');
 const generate_resume = () => import('./views/generate_resume.vue');
 const modify_resume = () => import('./views/modify_resume.vue');
+const all_resume = () => import('./views/all_resume.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/modify-resume/:id',
       name: 'modify-resume',
       component: modify_resume,
+    }, 
+    {
+      path: '/all-resume',
+      name: 'all-resume',
+      component: all_resume
     }
   ],
 });
