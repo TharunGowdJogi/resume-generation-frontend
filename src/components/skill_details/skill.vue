@@ -1,10 +1,10 @@
 <template>
     <div>
-      <Form :skill="edit_skill_data" @save="save_skill" @reset_form="reset_form" />
+      <Form :skill="edit_skill_data" @save="save_skill" @reset_form="reset_form" :user_previous_skills="user_previous_skills" />
   
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-card v-for="(skill, index) in skills" :key="index" class="mb-3">
+      <v-row style="margin-top: 20px;">
+        <v-col v-for="(skill, index) in skills" :key="index" class="mb-3" cols="4">
+          <v-card>
             <v-card-title>{{ skill.skill_name }}</v-card-title>
             <v-card-actions>
                 <div class="text-center">
@@ -33,10 +33,14 @@
     skills: {
       type: Array,
       required: true
+    },
+    user_previous_skills: {
+      type: Array,
+      required: true
     }
   });
   
-  const { skills } = toRefs(props);
+  const { skills, user_previous_skills } = toRefs(props);
   const default_skill_data = {
     skill_id: null, skill_name: ''
   };
