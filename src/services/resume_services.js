@@ -21,5 +21,8 @@ export default {
   },
   get_resume_by_user_id(user_id) {
     return apiClient.get(`resume/user/${user_id}`)
+  },
+  get_user_resume_by_category(user_id) {
+    return apiClient.get(`resume/allUserResumesByCategory/user/${user_id}`)
   }
 };
