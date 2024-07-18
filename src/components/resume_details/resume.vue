@@ -2,11 +2,11 @@
   <div>
     <v-card class="mx-auto pa-12 pb-8" elevation="8" rounded="lg">
       <user style="margin-bottom:40px;" :user_details="resume_details.user_info" />
-      <educations style="margin-bottom:40px;" :educations="resume_details.education" />
-      <employment style="margin-bottom:40px;" :employments="resume_details.employment" />
-      <projects style="margin-bottom:40px;" :projects="resume_details.projects" />
-      <skills style="margin-bottom:40px;" :skills="resume_details.skills" />
-      <honors style="margin-bottom:40px;" :honors="resume_details.honors" />
+      <educations style="margin-bottom:40px;" :educations="resume_details.education" :user_previous_educations="user_resumes?.education" />
+      <employment style="margin-bottom:40px;" :employments="resume_details.employment" :user_previous_employments="user_resumes?.employment" />
+      <projects style="margin-bottom:40px;" :projects="resume_details.projects" :user_previous_projects="user_resumes?.projects" />
+      <skills style="margin-bottom:40px;" :skills="resume_details.skills" :user_previous_skills="user_resumes?.skills" />
+      <honors style="margin-bottom:40px;" :honors="resume_details.honors" :user_previous_honors="user_resumes?.honors" />
     </v-card>
 
     <v-row justify="end" class="mt-4"> 
@@ -21,13 +21,14 @@
 </template>
 
 <script setup>
-import { ref, watch, toRefs, defineEmits } from 'vue';
+import { ref, watch, toRefs, defineEmits, onMounted } from 'vue';
 import user from '../user_details/user_details_form.vue';
 import educations from '../education_details/education.vue';
 import employment from '../employment_details/employment.vue';
 import projects from '../project_details/project.vue';
 import honors from '../honor_details/honor.vue';
 import skills from '../skill_details/skill.vue';
+import resume_services from "../../services/resume_services"
 
 const props = defineProps({
   resume_details: {
@@ -39,6 +40,7 @@ const props = defineProps({
   }
 });
 
+const user_resumes = ref(null);
 const { resume_details } = toRefs(props)
 
 const emit = defineEmits(["save"]);
@@ -46,6 +48,23 @@ const emit = defineEmits(["save"]);
 const create_resume = () => {
   emit('save')
 };
+
+const get_user_resumes = async () => {
+  const localUser = JSON.parse(localStorage.getItem("user"))
+  resume_services.get_user_resume_by_category(localUser.user_id)
+    .then((res) => {
+      console.log(res);
+      user_resumes.value = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  
+};
+
+onMounted(async()=> {
+  await get_user_resumes();
+})
 </script>
 
 <style>
