@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Form :education="current_education" @save="handle_save_education" @reset_education="reset_education" />
+    <Form :education="current_education" @save="handle_save_education" @reset_education="reset_education" :user_previous_educations="user_previous_educations" />
     <v-row style="margin-top: 20px;">
       <v-col v-for="(education, index) in educations" :key="index" cols="12" md="6">
         <v-card>
@@ -44,24 +44,30 @@ const props = defineProps({
   educations: {
     type: Array,
     required: true
+  },
+  user_previous_educations: {
+    type: Array,
+    required: true
   }
 });
 
-const { educations } = toRefs(props);
+const { educations, user_previous_educations} = toRefs(props);
 const initial_education = {
-  organization: '', course_name: '', specialization: '', gpa: '', city: '', state: '', country: '', from_year: '', to_year: '', details: ''
+  education_id: null, organization: '', course_name: '', specialization: '', gpa: '', city: '', state: '', country: '', from_year: '', to_year: '', details: ''
 };
 const current_education = ref({ ...initial_education });
 const snackbar = ref({ value: false, color: '', text: '' });
 
 const handle_save_education = (education) => {
   if (education.education_id) {
+    console.log("iffff..education is present")
     const index = educations.value.findIndex(edu => edu.education_id === education.education_id);
     if (index !== -1) {
       educations.value.splice(index, 1, education);
     }
     snackbar.value = { value: true, color: 'success', text: 'Education Updated Successfully' };
   } else {
+    console.log("else... education is not present ")
     education.education_id = educations.value.length + 1;
     educations.value.push(education);
     snackbar.value = { value: true, color: 'success', text: 'Education Added Successfully' };

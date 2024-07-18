@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h2>{{ edit_mode ? "Edit Education" : "Add Education" }}</h2>
+    <v-row>
+      <v-col>
+        <h2>{{ edit_mode ? "Edit Education" : "Add Education" }}</h2>
+      </v-col>
+      <v-col class="d-flex justify-end">
+        <v-btn @click="open_dialog">Select From Previous Educations</v-btn>
+      </v-col>
+    </v-row>
     <v-form ref="form" @submit.prevent="save" v-model="valid_form">
       <v-row>
         <v-col cols="6">
@@ -30,7 +37,7 @@
           <v-text-field
             variant="underlined"
             v-model="local_education.city"
-            label="City (required)"
+            label="City"
             required
           ></v-text-field>
         </v-col>
@@ -82,15 +89,45 @@
         <v-btn :color="snackbar.color" variant="text" @click="close_snack_bar">Close</v-btn>
       </template>
     </v-snackbar>
+
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title>Select a Previous Education</v-card-title>
+        <v-card-text>
+          <v-radio-group v-model="selected_education">
+            <v-radio
+              v-for="education in user_previous_educations"
+              :key="education.education_id"
+              :value="education"
+            >
+              <template v-slot:label>
+                <div>
+                  <strong>{{ education.course_name }}</strong>
+                  <div>{{ education.organization }} ({{ education.from_year }} - {{ education.to_year || 'Present' }})</div>
+                </div>
+              </template>
+            </v-radio>
+          </v-radio-group>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text @click="close_dialog">Cancel</v-btn>
+          <v-btn text @click="select_education">Done</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, watchEffect, defineProps, defineEmits } from 'vue';
+import { ref, watchEffect, defineProps, defineEmits, toRefs, onMounted } from 'vue';
 
 const props = defineProps({
   education: {
     type: Object,
+    required: true,
+  },
+  user_previous_educations: {
+    type: Array,
     required: true,
   },
 });
@@ -104,6 +141,10 @@ const snackbar = ref({
   color: '',
   text: '',
 });
+const { user_previous_educations } = toRefs(props);
+
+const dialog = ref(false);
+const selected_education = ref(null);
 
 watchEffect(() => {
   local_education.value = { ...props.education };
@@ -111,7 +152,7 @@ watchEffect(() => {
 });
 
 const save = () => {
-  if (!local_education.value.organization || !local_education.value.course_name || !local_education.value.city || !local_education.value.from_year) {
+  if (!local_education.value.organization || !local_education.value.course_name || !local_education.value.from_year) {
     snackbar.value = { value: true, color: 'error', text: 'Please fill in all required fields.' };
   } else {
     emit('save', local_education.value);
@@ -126,9 +167,28 @@ const close_snack_bar = () => {
 const reset_education = () => {
   emit('reset_education');
 };
+
+const open_dialog = () => {
+  dialog.value = true;
+};
+
+const close_dialog = () => {
+  dialog.value = false;
+};
+
+const select_education = () => {
+  if (selected_education.value) {
+    local_education.value = { ...selected_education.value, education_id: null };
+  }
+  close_dialog();
+};
+
+onMounted(() => {
+  console.log("user previous educations", user_previous_educations.value);
+});
 </script>
 
-<style>
+<style scoped>
 h2 {
   margin-bottom: 10px;
 }
