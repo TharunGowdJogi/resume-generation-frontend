@@ -53,7 +53,7 @@ const props = defineProps({
 
 const { educations, user_previous_educations} = toRefs(props);
 const initial_education = {
-  education_id: null, organization: '', course_name: '', specialization: '', gpa: '', city: '', state: '', country: '', from_year: '', to_year: '', details: ''
+  education_id: null, organization: '', course_name: '', gpa: '', city: '', state: '', country: '', from_year: '', to_year: '', details: ''
 };
 const current_education = ref({ ...initial_education });
 const snackbar = ref({ value: false, color: '', text: '' });
