@@ -1,4 +1,4 @@
-import apiClient from "./services";
+import { apiClient, pdfClient } from "./services";
 
 export default {
   update_resume(resume) {
@@ -24,5 +24,10 @@ export default {
   },
   get_user_resume_by_category(user_id) {
     return apiClient.get(`resume/allUserResumesByCategory/user/${user_id}`)
+  },
+  view_pdf(resume_id) {
+    return pdfClient.get(`resume/viewResume/${resume_id}`, {
+      responseType: 'blob',
+    })
   }
 };
