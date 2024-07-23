@@ -5,6 +5,7 @@
       @edit="editResume"
       :currentPage="currentPage"
       :resumeLength="resumes.length"
+      @refresh="fetchResumes"
     />
     <v-card-actions>
       <v-btn :disabled="currentPage === 1" @click="prevPage">Previous</v-btn>
@@ -33,6 +34,7 @@ const fetchResumes = async () => {
     resumes.value = response.data;
   } catch (error) {
     console.error('Error fetching resumes:', error);
+    resumes.value = []
   }
 };
 
