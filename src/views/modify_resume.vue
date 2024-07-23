@@ -32,13 +32,18 @@
     text: "",
   });
   const resume_details = ref({
+    user_info: JSON.parse(localStorage.getItem("user")) || {
+    first_name: "",
+    last_name: "",
+    email: "",
+    },
     user_info: {},
     education: [],
     employment: [],
     projects: [],
     skills: [],
     honors: [],
-    id: "",
+    resume_id: "",
   });
   
   const fetch_resume_details = async (id) => {
@@ -77,7 +82,7 @@
   };
   
   const update_resume = () => {
-    resume_services.update_resume({ ...resume_details.value })
+    resume_services.update_resume({ ...resume_details.value, user_id: resume_details.value.user_info.user_id })
       .then((res) => {
         console.log(res);
         snackbar.value = { text: "Resume updated Successfully", color: "success", value: true};
