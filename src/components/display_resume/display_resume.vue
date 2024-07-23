@@ -13,6 +13,8 @@
         <Projects :projects="resume.projects" />
         <v-btn @click="view_resume" style="margin-top: 36px"
           >View PDF</v-btn>
+        <v-btn @click="delete_resume" style="margin-top: 36px; margin-left: 10px;"
+          >Delete Resume</v-btn>
       </v-card-text>
       <v-snackbar v-model="snackbar.value" rounded="pill">
       {{ snackbar.text }}
@@ -67,5 +69,20 @@
     snackbar.value = { value: true, color: 'error', text: 'Failed to view PDF!' };
   }
 }
+
+const delete_resume = async () => {
+  try {
+    await resume_services.delete_resume(props.resume.resume_id);
+    emit('refresh')
+    snackbar.value = { value: true, color: 'success', text: 'Resume Deleted Successfully!' };
+
+  } catch (error) {
+    console.error('Failed to view PDF:', error);
+    snackbar.value = { value: true, color: 'error', text: 'Failed to delete resume, contact US!' };
+  }
+}
+const close_snack_bar = () => {
+  snackbar.value.value = false;
+};
 
   </script>
