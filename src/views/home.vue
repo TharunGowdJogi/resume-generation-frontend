@@ -1,6 +1,7 @@
 <script setup>
 import { ref,onMounted } from "vue";
 import { useRouter } from "vue-router";
+import MyFavorites from "./my_favorites.vue";
 
 const router = useRouter();
 const user = ref(null);
@@ -13,5 +14,5 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <h2>Home page</h2>
+    <MyFavorites />
 </template>
