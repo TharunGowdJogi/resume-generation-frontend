@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1 style="margin-bottom:20px;">My Resume's</h1>
     <DisplayResume 
       :resume="currentResume" 
       @edit="editResume"
@@ -7,7 +8,10 @@
       :resumeLength="resumes.length"
       @refresh="fetchResumes"
     />
-    <v-card-actions>
+    <v-alert v-if="resumes.length === 0" type="info">
+          No Resume's found.
+    </v-alert>
+    <v-card-actions v-if="resumes.length !== 0">
       <v-btn :disabled="currentPage === 1" @click="prevPage">Previous</v-btn>
       <v-spacer></v-spacer>
       <v-btn :disabled="currentPage === resumes.length" @click="nextPage">Next</v-btn>
