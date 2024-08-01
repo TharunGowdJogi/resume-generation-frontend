@@ -19,6 +19,9 @@ const deleteDialog = ref(false); // Ref for delete account confirmation dialog
 onMounted(() => {
   logoURL.value = ocLogo;
   user.value = JSON.parse(localStorage.getItem("user"));
+  if (user.value && user.value.is_admin) {
+    addAdminRoutes();
+  }
 });
 
 const routes = [
@@ -36,6 +39,21 @@ const routes = [
     }
   
 ];
+
+const adminRoutes = [
+  {
+    path: "/manage-resumes",
+    name: "Manage All Resumes",
+  },
+  {
+    path: "/manage-users",
+    name: "Manage All Users",
+  },
+];
+
+const addAdminRoutes = () => {
+  routes.push(...adminRoutes);
+};
 
 function closeSnackBar() {
   snackbar.value.value = false;
