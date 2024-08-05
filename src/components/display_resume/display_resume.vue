@@ -2,6 +2,7 @@
   <v-card v-if="resume" class="mb-4" style="padding:20px;">
     <v-card-title class="d-flex justify-space-between align-center">
       <span>Resume {{ currentPage }} of {{ resumeLength }}</span>
+      <h3> {{ resume.title  }}</h3>
       <v-btn color="primary" @click="$emit('edit')">Edit Resume</v-btn>
     </v-card-title>
     <v-card-text>
@@ -17,6 +18,7 @@
         {{ isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }}
       </v-btn>
     </v-card-text>
+    <ResumeComments :comments="resume.comments" :resume_id="resume.resume_id" />
     <v-snackbar v-model="snackbar.value" rounded="pill">
       {{ snackbar.text }}
       <template v-slot:actions>
@@ -36,6 +38,7 @@ import Honors from './honors.vue';
 import Projects from './projects.vue';
 import resume_services from '../../services/resume_services'
 import { ref, watch, onMounted } from 'vue';
+import ResumeComments from "./resume_comments.vue"
 
 const props = defineProps({
   resume: {

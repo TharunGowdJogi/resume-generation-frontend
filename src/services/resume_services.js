@@ -29,5 +29,11 @@ export default {
     return pdfClient.get(`resume/viewResume/${resume_id}`, {
       responseType: 'blob',
     })
+  },
+  add_comment(req) {
+    return apiClient.post("resume_comments",req)
+  },
+  get_resume_comments(id) {
+    return apiClient.get(`resume_comments/resume/${id}`)
   }
 };
