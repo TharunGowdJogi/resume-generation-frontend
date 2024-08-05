@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import user_services from "../services/user_services.js";
+import resume_favorite_services from "../services/resume_favorite_services.js";
 
 const router = useRouter();
 const isCreateAccount = ref(false);
@@ -21,12 +22,19 @@ const user = ref({
   password: "",
   summary: "",
 });
+const role = ref("User");
+
+const roleOptions = ["Admin", "User"];
 
 onMounted(async () => {
   if (localStorage.getItem("user") !== null) {
     router.push({ name: "home" });
   }
 });
+
+const isAdmin = () => {
+  return role.value === "Admin";
+};
 
 async function createAccount() {
   if (
@@ -40,8 +48,8 @@ async function createAccount() {
     snackbar.value.text = "Please enter all required values.";
     return;
   }
-  console.log("user",user.value)
-  await user_services.add_user(user.value)
+  await user_services
+    .add_user({ ...user.value, is_admin: isAdmin() })
     .then((res) => {
       snackbar.value.value = true;
       snackbar.value.color = "green";
@@ -66,11 +74,17 @@ async function login() {
   }
   await user_services
     .login_user(user.value)
-    .then((data) => {
+    .then(async (data) => {
       window.localStorage.setItem("user", JSON.stringify(data.data));
       snackbar.value.value = true;
       snackbar.value.color = "green";
       snackbar.value.text = "Login successful!";
+
+      // Fetch and store favorites in local storage
+      const userId = data.data.user_id;
+      const favorites = await resume_favorite_services.getFavoritesOnLogin(userId);
+      window.localStorage.setItem("favorites", JSON.stringify(favorites.data));
+
       router.push({ name: "home" });
     })
     .catch((error) => {
@@ -80,6 +94,18 @@ async function login() {
       snackbar.value.text =
         error?.response?.data?.message || "Failed to login!";
     });
+}
+
+async function logout() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  await resume_favorite_services.storeFavoritesOnLogout({
+    userId: user.user_id,
+    favorites: favorites,
+  });
+  localStorage.removeItem("user");
+  localStorage.removeItem("favorites");
+  router.push({ name: "login" });
 }
 
 function openCreateAccount() {
@@ -124,6 +150,12 @@ function closeSnackBar() {
             <v-text-field v-model="user.website_url" label="Website URL"></v-text-field>
             <v-text-field v-model="user.password" label="Password" type="password" required></v-text-field>
             <v-textarea v-model="user.summary" label="Professional Summary"></v-textarea>
+            <v-select
+                v-model="role"
+                label="Role"
+                :items="roleOptions"
+                required
+              ></v-select>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

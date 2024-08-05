@@ -3,6 +3,7 @@
     <v-row justify="center">
       <v-col cols="12" class="text-start">
         <h1
+        style="margin-bottom:20px;"
         >
           Generate Resume
         </h1>

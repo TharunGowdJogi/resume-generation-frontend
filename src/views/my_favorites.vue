@@ -23,8 +23,8 @@
   
   <script setup>
   import { ref, onMounted, computed } from "vue";
-  import DisplayResume from "../components/display_resume/display_resume.vue"; // Make sure to adjust the import path based on your project structure
-  import resumeServices from "../services/resume_services"; // Adjust the import path for resume_services
+  import DisplayResume from "../components/display_resume/display_resume.vue";
+  import resumeServices from "../services/resume_services"; 
   import { useRouter } from 'vue-router';
 
   const resumes = ref([]);
