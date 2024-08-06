@@ -1,6 +1,14 @@
 <template>
   <div>
     <v-card class="mx-auto pa-12 pb-8" elevation="8" rounded="lg">
+       <v-col cols="12">
+          <v-text-field
+            variant="underlined"
+            v-model="resume_details.title"
+            label="Resume Title"
+            required
+          ></v-text-field>
+        </v-col>
       <user style="margin-bottom:40px;" :user_details="resume_details.user_info" />
       <educations style="margin-bottom:40px;" :educations="resume_details.education" :user_previous_educations="user_resumes?.education" />
       <employment style="margin-bottom:40px;" :employments="resume_details.employment" :user_previous_employments="user_resumes?.employment" />
