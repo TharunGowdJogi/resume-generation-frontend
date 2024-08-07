@@ -3,6 +3,7 @@ import ocLogo from "/oc_logo.png";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import user_services from "../../services/user_services";
+import resume_favorite_services from "../../services/resume_favorite_services.js";
 
 const router = useRouter();
 const snackbar = ref({
@@ -34,8 +35,8 @@ const routes = [
       name: "Generate a Resume",
     },
     {
-      path: "/all-resume",
-      name: "All Resume's",
+      path: "/my-resume",
+      name: "My Resume's",
     }
   
 ];
@@ -59,15 +60,13 @@ function closeSnackBar() {
   snackbar.value.value = false;
 }
 
-function logout() {
-  user_services
-    .logout_user()
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+async function logout() {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  await resume_favorite_services.storeFavoritesOnLogout({
+    userId: user.value.user_id,
+    favorites: favorites,
+  });
+  localStorage.removeItem("favorites");
   localStorage.removeItem("user");
   user.value = null;
   router.push({ name: "login" });

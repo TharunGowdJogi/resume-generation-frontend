@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="mx-auto pa-12 pb-8" elevation="8" rounded="lg">
-       <v-col cols="12">
+      <v-col cols="12">
           <v-text-field
             variant="underlined"
             v-model="resume_details.title"
@@ -15,6 +15,7 @@
       <projects style="margin-bottom:40px;" :projects="resume_details.projects" :user_previous_projects="user_resumes?.projects" />
       <skills style="margin-bottom:40px;" :skills="resume_details.skills" :user_previous_skills="user_resumes?.skills" />
       <honors style="margin-bottom:40px;" :honors="resume_details.honors" :user_previous_honors="user_resumes?.honors" />
+      <resumeTemplate style="margin-bottom:40px;" v-model:selectedTemplate="resume_details.template" />
     </v-card>
 
     <v-row justify="end" class="mt-4"> 
@@ -37,6 +38,7 @@ import projects from '../project_details/project.vue';
 import honors from '../honor_details/honor.vue';
 import skills from '../skill_details/skill.vue';
 import resume_services from "../../services/resume_services"
+import resumeTemplate from "../template/template.vue"
 
 const props = defineProps({
   resume_details: {

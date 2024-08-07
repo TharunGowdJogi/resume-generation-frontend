@@ -40,7 +40,8 @@ const resume_details = ref({
   projects: [],
   skills: [],
   honors: [],
-  title: ""
+  title: "",
+  template: 1
 });
 
 const generate_resume = async () => {
