@@ -44,6 +44,7 @@
     skills: [],
     honors: [],
     resume_id: "",
+    template: 1
   });
   
   const fetch_resume_details = async (id) => {
@@ -70,6 +71,7 @@
         skills: resume_data.skills,
         honors: resume_data.honors,
         honorAwards: resume_data.honorAwards,
+        template: 1
       };
     } catch (error) {
       console.log(error);
