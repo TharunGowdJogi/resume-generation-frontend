@@ -8,7 +8,8 @@
       <v-list v-if="resumes.length > 0">
         <v-list-item v-for="resume in resumes" :key="resume.resume_id" @click="viewResume(resume.resume_id)">
           <v-list-item-content>
-            <v-list-item-title>{{ resume.ai_generated_url }}</v-list-item-title>
+            <v-list-item-title>{{ resume.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ resume.ai_generated_url }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
